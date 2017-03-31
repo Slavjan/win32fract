@@ -6,7 +6,7 @@
 
 class Fract
 {
-protected:
+protected: // read only
     int numerator;
     int denominator;
 private:

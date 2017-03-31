@@ -48,7 +48,7 @@ Fract::Fract( int numerator, int denominator ) :numerator( numerator ), denomina
 Fract::Fract( std::string fract )
 {
     std::stringstream stream( fract );
-    char delim = '/'; // ìåñòî äëÿ ñëýøà (ðàçäåëèòåëÿ ÷èñëèòåëÿ è çíàìåíàòåëÿ)
+    char delim = '/'; 
     stream >> numerator >> delim >> denominator;
     reduce();
 }
@@ -121,8 +121,6 @@ void Fract::setDenominator( int denominator )
         std::cout << "Fract::Error::denominator must be greater then zero." << std::endl;
     }
 }
-
-
 
 int Fract::getNumerator()
 {

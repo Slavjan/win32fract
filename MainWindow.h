@@ -7,6 +7,8 @@
 #include "Fract.h"
 
 class MainWindow {
+
+
 	static HWND hWnd; // хэндл окна
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam); // оконная процедура
 	static void InitializeComponent(); // создание визуальных компонентов (кнопок и т.д.)

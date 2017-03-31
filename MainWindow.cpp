@@ -1,18 +1,20 @@
 #include "MainWindow.h"
 
-// буфер для всех строковых операций
-#define BUFSIZE 128
+
+const int BUFSIZE = 128;
 char buf[BUFSIZE];
 
-MainWindow::MainWindow(HINSTANCE hInstance, int nCmdShow) {
+MainWindow::MainWindow(HINSTANCE hInstance, int nCmdShow) 
+{
+
 	WNDCLASS wcl;
-	LPSTR szClassName = "SampleClass33"; // имя класса окна
-	wcl.hInstance = hInstance; // WinMain() instance handle
-	wcl.lpszClassName = szClassName; // class name
-	wcl.lpfnWndProc = WndProc; // window callback function
+	LPSTR szClassName = "SampleClass33"; 
+	wcl.hInstance = hInstance; 
+	wcl.lpszClassName = szClassName; 
+	wcl.lpfnWndProc = WndProc; 
 	wcl.style = CS_VREDRAW | CS_HREDRAW;
-	wcl.hIcon = NULL; // иконка по умолчанию
-	wcl.hCursor = NULL; // курсор по умолчанию
+	wcl.hIcon = NULL; 
+	wcl.hCursor = NULL; 
 	wcl.lpszMenuName = NULL;
 	wcl.cbClsExtra = NULL;
 	wcl.cbWndExtra = NULL;
@@ -20,15 +22,23 @@ MainWindow::MainWindow(HINSTANCE hInstance, int nCmdShow) {
 
 	if(!RegisterClass(&wcl)) // try to register window class
 		return;
-	hWnd = CreateWindow(
-		szClassName, "Fract Calculator (WinAPI version)", 
-		WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS, 
-		0, 0, 230, 180, HWND_DESKTOP, NULL, hInstance, NULL
-	);
+
+	hWnd = CreateWindow(szClassName, 
+                        "Fract Calculator", WS_OVERLAPPEDWINDOW|
+                         WS_SYSMENU | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+                         CW_USEDEFAULT, 
+                         CW_USEDEFAULT, 
+                         230, 
+                         180, 
+                         HWND_DESKTOP, 
+                         NULL, 
+                         hInstance, 
+                         NULL);
+
 	if(!hWnd) return;
 
 	InitializeComponent();
-	// показываем окно
+	// отображаем окно
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 }
@@ -59,82 +69,79 @@ LRESULT MainWindow::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
 void MainWindow::InitializeComponent() {
 	// функция, в которой прописано создание всех визуальных компонентов
-	hwndButtonAdd.component = CreateWindow(
-		"BUTTON", // имя класса (он уже зарегистрирован и настроен)
-		"OK",  // текст
-		WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, //стили
-		150, 110, 50, 20,  // координаты и размер
-		hWnd, // хэндл окна
-		HMENU(hwndButtonAdd.id), // id элемента
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), // hInstance
-		NULL // последний параметр нам не нужен
-	);
-	hwndButtonSum.component = CreateWindow(
-		"BUTTON",
-		"+",
-		WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-		150, 10, 50, 23,
-		hWnd,
-		HMENU(hwndButtonSum.id),
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-		NULL
-	);
-	hwndButtonSub.component = CreateWindow(
-		"BUTTON",
-		"-",
-		WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-		150, 35, 50, 23,
-		hWnd,
-		HMENU(hwndButtonSub.id),
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-		NULL
-	);
-	hwndButtonMul.component = CreateWindow(
-		"BUTTON",
-		"*",
-		WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-		150, 60, 50, 23,
-		hWnd,
-		HMENU(hwndButtonMul.id),
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-		NULL
-	);
-	hwndButtonDiv.component = CreateWindow(
-		"BUTTON",
-		"/",
-		WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
-		150, 85, 50, 23,
-		hWnd,
-		HMENU(hwndButtonDiv.id),
-		(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
-		NULL
-	);
+    
+    RECT rect;
+    GetWindowRect(hWnd, &rect);
 
-	hwndListBox1.component = CreateWindow(
-		"LISTBOX", 
-		NULL, 
-		WS_CHILD|WS_VISIBLE|LBS_STANDARD, 
-		10, 10, 130, 100, 
-		hWnd, 
-		(HMENU)hwndListBox1.id, 
-		NULL, 
-		NULL
-	);
-	hwndEdit1.component = CreateWindow(
-		"EDIT",
-		NULL,
-		WS_BORDER|WS_VISIBLE|WS_CHILD|ES_LEFT|ES_MULTILINE,
-		10, 110, 130, 20,
-		hWnd,
-		(HMENU)hwndEdit1.id,
-		NULL,
-		NULL
-	);
+    int height = rect.bottom - rect.top;
+    int windh = rect.right - rect.left;
+
+	hwndButtonAdd.component = CreateWindow("BUTTON", // имя класса (он уже зарегистрирован и настроен)
+		                                   "OK",  // текст
+		                                   WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON, //стили
+		                                   150, 110, 50, 20, // координаты и размер
+		                                   hWnd, // хэндл окна
+		                                   HMENU(hwndButtonAdd.id), // id элемента
+                                           (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE), // hInstance
+		                                   NULL); // последний параметр нам не нужен
+	
+	hwndButtonSum.component = CreateWindow("BUTTON",
+		                                   "+",
+		                                   WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+		                                   150, 10, 50, 23,
+		                                   hWnd,
+		                                   HMENU(hwndButtonSum.id),
+		                                   (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		                                   NULL);
+
+	hwndButtonSub.component = CreateWindow("BUTTON",
+		                                   "-",
+		                                   WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+		                                   150, 35, 50, 23,
+		                                   hWnd,
+		                                   HMENU(hwndButtonSub.id),
+		                                   (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		                                   NULL);
+
+	hwndButtonMul.component = CreateWindow("BUTTON",
+		                                   "*",
+		                                   WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+		                                   150, 60, 50, 23,
+		                                   hWnd,
+		                                   HMENU(hwndButtonMul.id),
+		                                   (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		                                   NULL);
+
+	hwndButtonDiv.component = CreateWindow("BUTTON",
+		                                   "/",
+		                                   WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,
+		                                   150, 85, 50, 23,
+		                                   hWnd,
+		                                   HMENU(hwndButtonDiv.id),
+		                                   (HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+		                                   NULL);
+
+	hwndListBox1.component = CreateWindow("LISTBOX", 
+		                                  NULL, 
+		                                  WS_CHILD|WS_VISIBLE|LBS_STANDARD, 
+		                                  10, 10, 130, 100, 
+		                                  hWnd, 
+		                                  (HMENU)hwndListBox1.id, 
+		                                  NULL, 
+		                                  NULL);
+
+	hwndEdit1.component = CreateWindow("EDIT",
+		                               NULL,
+		                               WS_BORDER|WS_VISIBLE|WS_CHILD|ES_LEFT|ES_MULTILINE,
+		                               10, 110, 130, 20,
+		                               hWnd,
+		                               (HMENU)hwndEdit1.id,
+		                               NULL,
+		                               NULL);
 }
 
 void MainWindow::CollectFractsAndOperate(char op) {
-	// поскольку все действия при работе со списком дробей абсолютно одни и те же,
-	// они вынесены в эту функцию
+    
 	int count = SendMessage(hwndListBox1.component, LB_GETCOUNT, 0, 0); // количество элементов в ListBox
 	if(count == 0) {
 			MessageBox(hWnd, "Список дробей пуст", NULL, MB_OK);
@@ -168,6 +175,7 @@ void MainWindow::HandleEvents(WPARAM wParam) {
 			return;
 		}
 		SendMessage(hwndListBox1.component, LB_ADDSTRING, 0, (LPARAM)buf);
+
 	}
 
 	if(LOWORD(wParam) == hwndButtonSum.id && HIWORD(wParam) == BN_CLICKED) {
